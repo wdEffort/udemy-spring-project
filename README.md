@@ -67,6 +67,8 @@
 
 ## 로깅(Logging)
 
+> [스프링 log4j.xml 파일 설정 참고 링크](https://to-dy.tistory.com/20)
+
 1. 로그(Log)란 프로그램 개발이나 운영 중에 발생하는 문제점을 추적하거나 운영 상태를 모니러팅 하기 위한 텍스트이다.
 2. Java에서 로그를 남기는 가장 쉬운 방법은 `System.out.println();` 문법을 사용하는 방법이 있을 수 있다.
 3. `System.out.println();` 문법을 사용하는 방법보다 향상된 방법으로 로그를 기록하는 방법은 `로깅 프레임워크(Logging Framework)`를 이용하는 방법이 있다.
@@ -76,3 +78,4 @@
     - [java.util.logging](http://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html)
     - [Logback](http://logback.qos.ch/)
     - (기본)[SLF4J](http://slf4j.org/)
+
