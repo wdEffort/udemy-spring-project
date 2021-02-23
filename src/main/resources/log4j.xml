@@ -25,28 +25,28 @@
 
     <!-- 3rd party Loggers -->
     <logger name="org.springframework.core">
-        <level value="INFO"/>
+        <level value="DEBUG"/>
         <appender-ref ref="console-info"/>
     </logger>
 
     <logger name="org.springframework.beans">
-        <level value="INFO"/>
+        <level value="DEBUG"/>
         <appender-ref ref="console-info"/>
     </logger>
 
     <logger name="org.springframework.context">
-        <level value="INFO"/>
+        <level value="DEBUG"/>
         <appender-ref ref="console-info"/>
     </logger>
 
     <logger name="org.springframework.web">
-        <level value="INFO"/>
+        <level value="DEBUG"/>
         <appender-ref ref="console-info"/>
     </logger>
 
     <!-- Root Logger -->
     <root>
-        <priority value="OFF"/>
+        <priority value="WARN"/>
         <appender-ref ref="console"/>
     </root>
 
