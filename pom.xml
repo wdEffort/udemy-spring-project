@@ -21,6 +21,7 @@
         <javax.servlet.jsp-api-version>2.3.3</javax.servlet.jsp-api-version>
         <javax.servlet.jsp.jstl-api-version>1.2.2</javax.servlet.jsp.jstl-api-version>
         <taglibs-standard-impl-version>1.2.5</taglibs-standard-impl-version>
+        <org.slf4j-version>1.7.25</org.slf4j-version>
         <junit-version>4.11</junit-version>
     </properties>
 
@@ -68,25 +69,47 @@
             <version>${taglibs-standard-impl-version}</version>
         </dependency>
 
+        <!-- s:Logging -->
         <!-- SLF4J Logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.25</version>
+            <version>${org.slf4j-version}</version>
         </dependency>
-
+        <!-- Spring에서 내부적으로 사용하는 common-logging을 사용하지 못하도록 할 때 발생하는 에러를 방지 -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>${org.slf4j-version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${org.slf4j-version}</version>
+            <scope>runtime</scope>
+        </dependency>
         <!-- Logback -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>1.2.3</version>
         </dependency>
+        <!-- e:Logging -->
 
-        <!-- Spring에서 내부적으로 사용하는 common-logging을 사용하지 못하도록 할 때 발생하는 에러를 방지 -->
+        <!-- AOP -->
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jcl-over-slf4j</artifactId>
-            <version>1.7.25</version>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.9.5</version>
+        </dependency>
+
+        <!-- MySQL Connector(JDBC 라이브러리) -->
+        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.17</version>
         </dependency>
 
         <!-- Test Artifacts -->
