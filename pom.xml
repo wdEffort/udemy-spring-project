@@ -22,7 +22,7 @@
         <javax.servlet.jsp.jstl-api-version>1.2.2</javax.servlet.jsp.jstl-api-version>
         <taglibs-standard-impl-version>1.2.5</taglibs-standard-impl-version>
         <org.slf4j-version>1.7.25</org.slf4j-version>
-        <junit-version>4.11</junit-version>
+        <junit-version>4.12</junit-version>
     </properties>
 
     <dependencies>
@@ -31,12 +31,6 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
             <version>${spring-webmvc-version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>commons-logging</groupId>
-                    <artifactId>commons-logging</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
@@ -83,12 +77,6 @@
             <version>${org.slf4j-version}</version>
             <scope>runtime</scope>
         </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>${org.slf4j-version}</version>
-            <scope>runtime</scope>
-        </dependency>
         <!-- Logback -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
@@ -104,7 +92,7 @@
             <version>1.9.5</version>
         </dependency>
 
-        <!-- MySQL Connector(JDBC 라이브러리) -->
+        <!-- MySQL의 JDBC 연결 라이브러리 -->
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
         <dependency>
             <groupId>mysql</groupId>
@@ -112,7 +100,27 @@
             <version>8.0.17</version>
         </dependency>
 
-        <!-- Test Artifacts -->
+        <!-- s:MyBatis 연동 라이브러리 -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>3.5.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+            <version>2.0.4</version>
+        </dependency>
+        <!-- e:MyBatis 연동 라이브러리 -->
+
+        <!-- JdbcTemplate -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${spring-webmvc-version}</version>
+        </dependency>
+
+        <!-- Spring Test Artifacts -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
