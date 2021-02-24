@@ -17,7 +17,7 @@
     <!-- DataSource 설정(DB 연결을 담당) -->
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://localhost:3306/udemy"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/udemy?serverTimezone=UTC&amp;useSSL=true"/>
         <property name="username" value="udemy"/>
         <property name="password" value="1234"/>
     </bean>
@@ -30,6 +30,8 @@
         <property name="dataSource" ref="dataSource"/>
         <!-- MyBatis 설정 파일 위치 설정 -->
         <property name="configLocation" value="classpath:/mybatis-config.xml"/>
+        <!-- SQL Mapper 파일 위치 설정 -->
+        <property name="mapperLocations" value="classpath:/mappers/**/*.xml"/>
     </bean>
 
     <!--
@@ -39,8 +41,8 @@
     현재의 스프링 트랜잭션에서 사용될수 있도록 보장하고 필요한 시점에 세션을 닫고, 커밋하거나 롤백하는 것을 포함한 세션의 생명주기를 관리한다.
     또한 MyBatis 예외를 스프링의 DataAccessException로 변환하는 작업도 처리한다.
     -->
-    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-        <constructor-arg index="0" ref="sqlSessionFactory"/>
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
+        <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"/>
     </bean>
 
 </beans>

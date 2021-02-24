@@ -41,5 +41,4 @@ public class ControllerTest {
     public void testController() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders.get("/")); // GET 방식으로 "/" URL을 요청 테스트
     }
-
 }

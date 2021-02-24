@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+<mapper/> 태그
+namespace 속성 : MyBatis에서 원하는 SQL문을 찾아서 동작하도록 하는 클래스를 지정한다.
+-->
+<mapper namespace="com.udemy.spring.project.member.repository.MemberDAO">
+
+    <select id="getTime" resultType="String">
+        SELECT NOW()
+    </select>
+
+    <insert id="insertMember" parameterType="com.udemy.spring.project.member.vo.MemberVO">
+        INSERT INTO TBL_MEMBER (ID, PASSWORD, USERNAME, EMAIL, REG_DATE, UPDATE_DATE)
+        VALUES (#{id}, #{password}, #{username}, #{email}, #{regDate}, #{updateDate})
+    </insert>
+
+</mapper>
