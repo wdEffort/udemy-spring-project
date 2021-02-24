@@ -39,6 +39,7 @@ public class ControllerTest {
 
     @Test
     public void testController() throws Exception {
+        System.out.println("Tomcat 설정 없이 MockMvc 객체를 이용한 Controller 테스트 ...");
         this.mockMvc.perform(MockMvcRequestBuilders.get("/")); // GET 방식으로 "/" URL을 요청 테스트
     }
 }

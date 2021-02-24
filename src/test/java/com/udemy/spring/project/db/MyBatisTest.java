@@ -24,6 +24,7 @@ public class MyBatisTest {
     public void testSqlSession() throws Exception {
         // SqlSessionFactory에서 SqlSession(MyBatis와 Spring을 연결)을 가져올 수 있는지 테스트
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            System.out.println("MyBatis 설정 테스트 ...");
             System.out.println("MyBatis SqlSession => " + sqlSession);
         } catch (Exception e) {
             e.printStackTrace();

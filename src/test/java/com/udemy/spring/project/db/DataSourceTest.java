@@ -21,6 +21,7 @@ public class DataSourceTest {
     @Test
     public void testConnection() throws Exception {
         try (Connection connection = dataSource.getConnection()) {
+            System.out.println("DataSource 설정 테스트 ...");
             System.out.println("MySQL DataSource => " + connection);
         } catch (Exception e) {
             e.printStackTrace();

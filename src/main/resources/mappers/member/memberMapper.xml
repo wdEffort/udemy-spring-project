@@ -3,9 +3,13 @@
 
 <!--
 <mapper/> 태그
-namespace 속성 : MyBatis에서 원하는 SQL문을 찾아서 동작하도록 하는 클래스를 지정한다.
+namespace 속성 사용방법 :
+    1. MyBatis에서 원하는 SQL문을 찾아서 동작하도록 하는 클래스를 지정한다.
+      - <mapper namespace="com.udemy.spring.project.member.repository.MemberDAO"/>
+    2. Mapper 별칭을 설정하고 DAO에서는 static 한 문자열 타입의 변수에 별칭을 저장하고 사용한다.
+      - <mapper namespace="MemberMapper"/>
 -->
-<mapper namespace="com.udemy.spring.project.member.repository.MemberDAO">
+<mapper namespace="MemberMapper">
 
     <select id="getTime" resultType="String">
         SELECT NOW()

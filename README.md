@@ -79,3 +79,74 @@
     - [Logback](http://logback.qos.ch/)
     - (기본)[SLF4J](http://slf4j.org/)
 
+## log4jdbc-log4j2 라이브러리 사용하기
+
+> [logback을 사용할 경우 설정 참고 링크 - 1](https://sonegy.wordpress.com/2014/05/23/how-to-slf4j/)
+> 
+> [logback을 사용할 경우 설정 참고 링크 - 2](https://m.blog.naver.com/PostView.nhn?blogId=0neslife&logNo=221161290205&proxyReferer=https:%2F%2Fwww.google.com%2F)
+> 
+> [log4jdbc-log4j2 설정 참고 링크](https://www.hanumoka.net/2018/07/27/spring-20180727-Spring-add-log4jdbc-log4j2-in-mysql-mybatis/)
+
+1. log4jdbc는 스프링에서 SQL문을 실행한 로그를 효과적이고 직관적으로 볼 수 있도록 해주는 라이브러리이다.
+2. 설정 방법
+    - pom.xml에 `log4jdbc-log4j2` 의존 설정 추가
+      ```xml
+      <dependencies>
+           <dependency>
+               <groupId>org.bgee.log4jdbc-log4j2</groupId>
+               <artifactId>log4jdbc-log4j2-jdbc4.1</artifactId>
+               <version>1.16</version>
+           </dependency>
+      </dependencies>
+      ```
+    - DataSource 설정 변경
+       ```xml
+       <!-- DataSource 설정(DB 연결을 담당) -->
+       <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+            <!-- <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/> -->
+            <!-- <property name="url" value="jdbc:mysql://localhost:3306/udemy?characterEncoding=UTF-8&amp;serverTimezone=UTC&amp;useSSL=false"/> -->
+            <!-- MyBatis 로그 라이브러리를 사용하는 경우 드라이버 및 URL 설정 -->
+            <property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"/>
+            <property name="url" value="jdbc:log4jdbc:mysql://localhost:3306/udemy?characterEncoding=UTF-8&amp;serverTimezone=UTC&amp;useSSL=false"/>
+            <property name="username" value="udemy"/>
+            <property name="password" value="1234"/>
+       </bean> 
+      ```
+    - src/main/resources 경로에 `log4jdbc.log4j2.properties` 파일 생성 및 프로퍼티 추가
+      ```properties
+      #사용할 Driver를 설정한다.
+      log4jdbc.drivers=com.mysql.cj.jdbc.Driver
+      log4jdbc.spylogdelegator.name=net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator
+      #SQL문 최대 출력 라인 수를 설정한다. 0인 경우 무제한이며, 설정하지 않은 경우 한줄 출력으로 설정된다.
+      log4jdbc.dump.sql.maxlinelength=0
+      #Disable - Loading class `com.mysql.jdbc.Driver'. This is deprecated. The new driver class is `com.mysql.cj.jdbc.Driver'. The driver is automatically registered via the SPI and manual loading of the driver class is generally unnecessary.
+      log4jdbc.auto.load.popular.drivers=false
+      ```
+    - src/main/resources 경로에 `logback.xml` 파일 생성(이미 존재할 경우 <logger/> 태그 부분만 추가하도록 한다.)
+      ```xml
+      <?xml version="1.0" encoding="UTF-8"?>
+      <configuration>
+      
+          <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+          <!-- Other ... -->
+            
+          <!-- SQL Loggers -->
+          <logger name="jdbc" level="OFF"/>
+          <!-- SQL문만 로깅. PreparedStatement일 경우 관련된 Arguments 값으로 대체된 SQL문을 출력한다. -->
+          <logger name="jdbc.splonly" level="DEBUG"/>
+          <!-- SQL문 수행 시간(milliseconds) 로깅 한다. -->
+          <logger name="jdbc.sqltiming" level="INFO"/>
+          <!-- ResultSet을 제외한 모든 JDBC 호출 정보 로깅. JDBC 문제를 추적해야 할 필요가 있는 경우에만 사용하는 것을 권정한다. -->
+          <logger name="jdbc.audit" level="WARN"/>
+          <!-- ResultSet을 포함한 모든 JDBC 호출 정보 로깅. 로그 양이 많다. -->
+          <logger name="jdbc.resultset" level="ERROR"/>
+          <!-- SQL문 실행 결과를 Table(표) 형태로 로깅 한다. -->
+          <logger name="jdbc.resultsettable" level="ERROR"/>
+          <!-- DB Connection 연결 및 종료 로깅. 메모리 누수 확인도 가능하다. -->
+          <logger name="jdbc.connection" level="INFO"/>
+      
+          <!-- Other ... -->
+      
+      </configuration>
+      ```   

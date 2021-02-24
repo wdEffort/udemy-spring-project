@@ -20,13 +20,16 @@ public class MemberDAOTest {
 
     @Test
     public void testGetTime() throws Exception {
+        System.out.println("sqlSession을 이용한 SQL문법으로 날짜 조회 테스트 ...");
         System.out.println(memberDAO.getTime());
     }
 
     @Test
     public void testInsertMember() throws Exception {
+        System.out.println("sqlSession을 이용한 회원 정보 등록 테스트 ...");
+
         MemberVO memberVO = new MemberVO();
-        memberVO.setId("test");
+        memberVO.setId("tester");
         memberVO.setPassword("1234");
         memberVO.setUsername("홍길동");
         memberVO.setEmail("test@example.com");
