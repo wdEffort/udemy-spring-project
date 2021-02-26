@@ -5,8 +5,10 @@ import com.udemy.spring.project.member.vo.MemberVO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * SqlSessionTemplate 테스트
@@ -25,11 +27,13 @@ public class MemberDAOTest {
     }
 
     @Test
+    @Transactional // 트랜잭션 처리를 하기 위한 어노테이션 설정
+    @Rollback(value = true) // 테스트가 진행되고 나서 Rollback 처리를 하기 위한 어노테이션 설정
     public void testInsertMember() throws Exception {
         System.out.println("sqlSession을 이용한 회원 정보 등록 테스트 ...");
 
         MemberVO memberVO = new MemberVO();
-        memberVO.setId("tester");
+        memberVO.setId("test");
         memberVO.setPassword("1234");
         memberVO.setUsername("홍길동");
         memberVO.setEmail("test@example.com");
