@@ -82,9 +82,9 @@
 ## log4jdbc-log4j2 라이브러리 사용하기
 
 > [logback을 사용할 경우 설정 참고 링크 - 1](https://sonegy.wordpress.com/2014/05/23/how-to-slf4j/)
-> 
+>
 > [logback을 사용할 경우 설정 참고 링크 - 2](https://m.blog.naver.com/PostView.nhn?blogId=0neslife&logNo=221161290205&proxyReferer=https:%2F%2Fwww.google.com%2F)
-> 
+>
 > [log4jdbc-log4j2 설정 참고 링크](https://www.hanumoka.net/2018/07/27/spring-20180727-Spring-add-log4jdbc-log4j2-in-mysql-mybatis/)
 
 1. log4jdbc는 스프링에서 SQL문을 실행한 로그를 효과적이고 직관적으로 볼 수 있도록 해주는 라이브러리이다.
@@ -150,3 +150,42 @@
       
       </configuration>
       ```   
+
+---
+
+## MyBatis Test Rollback 처리하기
+
+1. MyBatis 테스트의 주 목적은 DB와 연결해서 SQL문이 정상적으로 수행되는지를 확인하는 것이기 때문에 실제로 데이터가 저장이 되면 안된다.
+2. 특히 INSERT, UPDATE, DELETE문을 테스트하는 경우 트랜잭션 처리를 통해 Rollback 과정이 마지막에 수행되어야 한다.
+3. 테스트 트랜잭션 설정 방법
+    - root-context.xml에 `TransactionManager` Bean 설정
+       ```xml
+      <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+         <property name="dataSource" ref="dataSource"/>
+      </bean>
+      ```
+    - @Transactional과 @Rollback(value = true) 어노테이션을 사용하여 테스트 코드 작성
+       ```java
+       @RunWith(SpringJUnit4ClassRunner.class)
+       @ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/**/*.xml"})
+       public class MemberDAOTest {
+       
+           @Autowired
+           private MemberDAO memberDAO;
+       
+           @Test
+           @Transactional // 트랜잭션 처리를 하기 위한 어노테이션 설정
+           @Rollback(value = true) // 테스트가 진행되고 나서 Rollback 처리를 하기 위한 어노테이션 설정
+           public void testInsertMember() throws Exception {
+               System.out.println("sqlSession을 이용한 회원 정보 등록 테스트 ...");
+       
+               MemberVO memberVO = new MemberVO();
+               memberVO.setId("test");
+               memberVO.setPassword("1234");
+               memberVO.setUsername("홍길동");
+               memberVO.setEmail("test@example.com");
+       
+               memberDAO.insertMember(memberVO);
+           }
+       }
+       ```
