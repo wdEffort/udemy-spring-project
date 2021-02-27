@@ -14,6 +14,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+/**
+ * 컨트롤러 테스트 클래스
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 // 스프링 MVC를 테스트 하는데 있어서 필요한 어노테이션 설정, 기존의 스프링 테스트와 다른 점이다.
 @WebAppConfiguration
@@ -39,7 +42,7 @@ public class ControllerTest {
 
     @Test
     public void testController() throws Exception {
-        System.out.println("Tomcat 설정 없이 MockMvc 객체를 이용한 Controller 테스트 ...");
+        LOGGER.info("Tomcat 설정 없이 MockMvc 객체를 이용한 Controller 테스트 ...");
         this.mockMvc.perform(MockMvcRequestBuilders.get("/")); // GET 방식으로 "/" URL을 요청 테스트
     }
 }

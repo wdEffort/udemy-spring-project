@@ -1,7 +1,10 @@
 package com.udemy.spring.project.db;
 
+import com.udemy.spring.project.board.repository.impl.BoardPostDAOImplTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -15,14 +18,16 @@ import java.sql.Connection;
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/**/*.xml")
 public class DataSourceTest {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(DataSourceTest.class);
+
     @Autowired
     private DataSource dataSource;
 
     @Test
     public void testConnection() throws Exception {
         try (Connection connection = dataSource.getConnection()) {
-            System.out.println("DataSource 설정 테스트 ...");
-            System.out.println("MySQL DataSource => " + connection);
+            LOGGER.info("DataSource 설정 테스트 ...");
+            LOGGER.info("MySQL DataSource => " + connection);
         } catch (Exception e) {
             e.printStackTrace();
         }

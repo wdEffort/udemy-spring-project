@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="BoardPostMapper">
+
+    <insert id="insert" parameterType="BoardPostVO">
+        <![CDATA[
+        INSERT INTO TBL_BOARD_POST (SUBJECT, CONTENT, WRITER, REG_DATE)
+        VALUES (#{subject}, #{content}, #{writer}, NOW())
+        ]]>
+    </insert>
+
+    <update id="update" parameterType="BoardPostVO">
+        <![CDATA[
+        UPDATE TBL_BOARD_POST
+        SET SUBJECT = #{subject}
+          , CONTENT = #{content}
+          , WRITER  = #{writer}
+        WHERE POST_ID = #{postId} LIMIT 1
+        ]]>
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+        <![CDATA[
+        DELETE
+        FROM TBL_BOARD_POST
+        WHERE POST_ID = #{postId} LIMIT 1
+        ]]>
+    </delete>
+
+    <select id="read" parameterType="Integer" resultType="BoardPostVO">
+        <![CDATA[
+        SELECT POST_ID, SUBJECT, CONTENT, WRITER, REG_DATE, HIT
+        FROM TBL_BOARD_POST
+        WHERE 1 = 1
+          AND POST_ID = #{postId} LIMIT 1
+        ]]>
+    </select>
+
+    <select id="list" resultType="BoardPostVO">
+        <![CDATA[
+        SELECT POST_ID, SUBJECT, CONTENT, WRITER, REG_DATE, HIT
+        FROM TBL_BOARD_POST
+        WHERE 1 = 1
+        ORDER BY POST_ID DESC, REG_DATE DESC
+        ]]>
+    </select>
+
+</mapper>
