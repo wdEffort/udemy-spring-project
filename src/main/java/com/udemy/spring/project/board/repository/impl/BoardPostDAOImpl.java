@@ -2,6 +2,7 @@ package com.udemy.spring.project.board.repository.impl;
 
 import com.udemy.spring.project.board.repository.BoardPostDAO;
 import com.udemy.spring.project.board.vo.BoardPostVO;
+import com.udemy.spring.project.utils.PageCriteria;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -39,5 +40,15 @@ public class BoardPostDAOImpl implements BoardPostDAO {
     @Override
     public List<BoardPostVO> list() throws Exception {
         return sqlSession.selectList(SQL_MAPPER_NAMESPACE + ".list");
+    }
+
+    @Override
+    public List<BoardPostVO> listCriteria(PageCriteria pageCriteria) throws Exception {
+        return sqlSession.selectList(SQL_MAPPER_NAMESPACE + ".listCriteria", pageCriteria);
+    }
+
+    @Override
+    public int count() {
+        return sqlSession.selectOne(SQL_MAPPER_NAMESPACE + ".count");
     }
 }

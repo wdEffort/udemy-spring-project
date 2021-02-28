@@ -3,6 +3,7 @@ package com.udemy.spring.project.board.repository.impl;
 
 import com.udemy.spring.project.board.repository.BoardPostDAO;
 import com.udemy.spring.project.board.vo.BoardPostVO;
+import com.udemy.spring.project.utils.PageCriteria;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -12,6 +13,8 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/**/*.xml"})
@@ -77,6 +80,21 @@ public class BoardPostDAOImplTest {
     public void listTest() throws Exception {
         LOGGER.info("게시글 목록 조회 테스트 ...");
 
-        LOGGER.info(boardPostDAO.list().toString());
+        //LOGGER.info(boardPostDAO.list().toString());
+    }
+
+    @Test
+    public void listCriteriaTest() throws Exception {
+        LOGGER.info("PageCriteria를 이용한 게시글 목록 조회 페이징 테스트 ...");
+
+        PageCriteria pageCriteria = new PageCriteria();
+        pageCriteria.setPage(3);
+        pageCriteria.setNumPerPage(30);
+
+        List<BoardPostVO> boardPostList = boardPostDAO.listCriteria(pageCriteria);
+
+        for (BoardPostVO boardPost : boardPostList) {
+            LOGGER.info(boardPost.toString());
+        }
     }
 }

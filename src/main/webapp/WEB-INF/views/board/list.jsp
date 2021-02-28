@@ -36,6 +36,28 @@
                         </table>
                     </section>
                 </div>
+                <div class="showback text-center">
+                    <div class="btn-group">
+                        <c:if test="${pagingMaker.prev eq true}">
+                            <button type="button" class="btn btn-default"><a href="${pageContext.request.contextPath}/board/list?page=1"><i class="glyphicon glyphicon-backward"></i></a></button>
+                            <button type="button" class="btn btn-default"><a href="${pageContext.request.contextPath}/board/list?page=${pagingMaker.startPage - 1}"><i class="glyphicon glyphicon-chevron-left"></i></a></button>
+                        </c:if>
+                        <c:forEach begin="${pagingMaker.startPage}" end="${pagingMaker.endPage}" var="pNum">
+                            <c:choose>
+                                <c:when test="${pagingMaker.pageCriteria.page eq pNum}">
+                                    <button type="button" class="btn btn-info">${pNum}</button>
+                                </c:when>
+                                <c:otherwise>
+                                    <button type="button" class="btn btn-default"><a href="<c:url value="${pageContext.request.contextPath}/board/list?page=${pNum}"/>">${pNum}</a></button>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:forEach>
+                        <c:if test="${pagingMaker.next eq true}">
+                            <button type="button" class="btn btn-default"><a href="${pageContext.request.contextPath}/board/list?page=${pagingMaker.endPage + 1}"><i class="glyphicon glyphicon-chevron-right"></i></a></button>
+                            <button type="button" class="btn btn-default"><a href="${pageContext.request.contextPath}/board/list?page=${pagingMaker.finalEndPage}"><i class="glyphicon glyphicon-forward"></i></a></button>
+                        </c:if>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row mt text-right">

@@ -12,6 +12,7 @@
 
     <typeAliases>
         <typeAlias type="com.udemy.spring.project.board.vo.BoardPostVO" alias="BoardPostVO"/>
+        <typeAlias type="com.udemy.spring.project.utils.PageCriteria" alias="PageCriteria"/>
     </typeAliases>
 
 </configuration>

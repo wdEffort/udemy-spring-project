@@ -3,6 +3,8 @@ package com.udemy.spring.project.board.controller;
 import com.udemy.spring.project.board.service.BoardPostService;
 import com.udemy.spring.project.board.validator.BoardPostValidator;
 import com.udemy.spring.project.board.vo.BoardPostVO;
+import com.udemy.spring.project.utils.PageCriteria;
+import com.udemy.spring.project.utils.PagingMaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -147,15 +149,21 @@ public class BoardPostController {
     /**
      * 글 목록 화면
      *
+     * @param pageCriteria 페이징 처리를 위한 객체(스프링 MVC에서는 메소드 파라미터 타입에 해당하는 객체를 기본 생성자를 이용해서 생성한 후 인자로 전달한다.)
      * @param model
      * @return
      * @throws Exception
      */
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public String getBoardPostList(Model model) throws Exception {
-        List<BoardPostVO> boardPostList = boardPostService.list();
+    public String getBoardPostList(PageCriteria pageCriteria, Model model) throws Exception {
+        List<BoardPostVO> boardPostList = boardPostService.listCriteria(pageCriteria);
+
+        PagingMaker pagingMaker = new PagingMaker();
+        pagingMaker.setPageCriteria(pageCriteria);
+        pagingMaker.setTotalCount(boardPostService.count());
 
         model.addAttribute("boardPostList", boardPostList);
+        model.addAttribute("pagingMaker", pagingMaker);
 
         return "board/list";
     }

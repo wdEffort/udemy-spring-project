@@ -46,4 +46,26 @@
         ]]>
     </select>
 
+    <!--
+    #{startPage} : PageCriteria 클래스의 getStartPage() 메소드를 호출하는 것과 같다.
+    #{numPerPage} : PageCriteria 클래스의 getNumPerPage() 메소드를 호출하는 것과 같다.
+    -->
+    <select id="listCriteria" parameterType="PageCriteria" resultType="BoardPostVO">
+        <![CDATA[
+        SELECT POST_ID, SUBJECT, CONTENT, WRITER, REG_DATE, HIT
+        FROM TBL_BOARD_POST
+        WHERE 1 = 1
+        ORDER BY POST_ID DESC, REG_DATE DESC
+            LIMIT #{startPage}, #{numPerPage}
+        ]]>
+    </select>
+
+    <select id="count" resultType="int">
+        <![CDATA[
+        SELECT COUNT(*) AS cnt
+        FROM TBL_BOARD_POST
+        WHERE 1 = 1
+        ]]>
+    </select>
+
 </mapper>
