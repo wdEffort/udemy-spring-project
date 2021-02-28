@@ -72,6 +72,10 @@ public class BoardPostController {
     public String getBoardPostViewPage(@PathVariable("id") Integer postId, Model model) throws Exception {
         BoardPostVO boardPost = boardPostService.read(postId);
 
+        if (boardPost == null) {
+            throw new NullPointerException("존재하지 않는 게시글입니다.");
+        }
+
         model.addAttribute("boardPost", boardPost);
 
         return "board/view";
@@ -88,6 +92,10 @@ public class BoardPostController {
     @RequestMapping(value = "/modify/{id}", method = RequestMethod.GET)
     public String getBoardPostModifyPage(@PathVariable("id") Integer postId, Model model) throws Exception {
         BoardPostVO boardPost = boardPostService.read(postId);
+
+        if (boardPost == null) {
+            throw new NullPointerException("존재하지 않는 게시글입니다.");
+        }
 
         model.addAttribute("vo", boardPost);
 

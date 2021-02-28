@@ -269,3 +269,33 @@
                 </insert>
            </mapper> 
            ```
+
+---
+
+## 예외 처리
+
+1. 스프링 MVC를 사용할 때 Controller 쪽에서 예외(Exception)를 처리하기 위해서 사용하는 방식
+    - @ExceptionHandler 어노테이션을 사용하는 방식
+    - @ControllerAdvice 어노테이션을 이용하는 방식(가장 많이 사용하는 방식)
+        1) 공통의 Exception 처리 전용 객체를 사용하는 방법이다.
+        2) 사용방식
+            - 클래스에 @ControllerAdvice 어노테이션을 선언한다.
+            - 각 메소드에 @ExceptionHandler 어노테이션을 이용해서 적절한 타입의 Exception을 처리한다.
+               ```java
+               // 현재 클래스가 Controller에서 발생하는 Exception을 전문적으로 처리하는 클래스임을 알려준다.
+               @ControllerAdvice
+               public class CommonExceptionAdvice {
+               
+                   /**
+                    * Exception 타입 예외가 발생하면 처리하는 메소드
+                    *
+                    * @param e
+                    * @return
+                    */
+                   @ExceptionHandler(Exception.class)
+                   public String common(Exception e) {
+                       return "exception/exception";
+                   }
+               }
+               ```
+    - @ResponseStatus 어노테이션을 이용한 HTTP 상태 코드 처리 방식
