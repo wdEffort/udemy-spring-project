@@ -189,3 +189,83 @@
            }
        }
        ```
+
+---
+
+## MyBatis Type Alias 설정
+
+1. Type Alias란 MyBatis를 사용하면서 parameterType, resultType 등에 클래스 전체 경로를 지정해서 사용하는 불편함을 줄여주고자 지원하는 기능이다.
+2. 사용하는 방법은 <typeAlias/> 태그를 이용하거나 <package/> 태그를 이용하는 방법이 있다.
+    - \<typeAlias/\>
+        1) `클래스별` Type Alias를 지정할 경우에 사용한다.
+        2) `type` 속성 : Type Alias로 사용할 클래스의 경로를 클래스 이름을 포함하여 지정한다.
+        3) `alias` 속성 : 클래스의 별칭을 설정한다.
+        4) mybatis-config.xml 파일에 Type Alias 설정
+           ```xml
+            <?xml version="1.0" encoding="UTF-8" ?>
+            <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+            <configuration>
+            
+                <typeAliases>
+                    <!-- com.udemy.spring.project.board.vo.BoardPostVO 클래스를 "BoardPostVO" 라는 이름으로 Alias를 지정한다. -->
+                    <typeAlias type="com.udemy.spring.project.board.vo.BoardPostVO" alias="BoardPostVO"/>
+                </typeAliases>
+            
+            </configuration>
+           ```
+        5) 사용방법
+            ```xml
+            <?xml version="1.0" encoding="UTF-8" ?>
+            <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+            
+            <mapper namespace="BoardPostMapper">
+            
+                <!-- SQL Mapper에서 parameterType, resultType 등에 지정해 놓은 Type Alias의 별칭을 사용한다. -->
+                <insert id="insert" parameterType="BoardPostVO">
+                    <![CDATA[
+                    INSERT INTO TBL_BOARD_POST (SUBJECT, CONTENT, WRITER, REG_DATE)
+                    VALUES (#{subject}, #{content}, #{writer}, NOW())
+                    ]]>
+                </insert>
+           </mapper>
+           ```
+
+    - \<package/\>
+        1) VO 객체가 여러 개이고, `한 Package 안에 존재할 경우` 사용한다.
+        2) `name` 속성 : Type Alias로 사용할 클래스의 경로를 지정한다.
+        3) mybatis-config.xml 파일에 Type Alias 설정
+           ```xml
+            <?xml version="1.0" encoding="UTF-8" ?>
+            <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+            <configuration>
+
+                <typeAliases>
+                    <!-- com.udemy.spring.project.vo 패키지 안에 있는 모든 클래스에 대해 Alias를 설정한다. -->
+                    <package name="com.udemy.spring.project.vo"/>
+                </typeAliases>
+            
+            </configuration>
+           ```
+        4) VO 클래스마다 @Alias("사용할 Alias 명") 어노테이션을 사용해서 Alias를 지정한다.
+           ```java
+            @Alias("BoardPostVO")
+            public class BoardPostVO {
+                // code ...
+            }
+           ```
+        5) 사용방법
+           ```xml
+            <?xml version="1.0" encoding="UTF-8" ?>
+            <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+            
+            <mapper namespace="BoardPostMapper">
+            
+                <!-- SQL Mapper에서 parameterType, resultType 등에 지정해 놓은 Type Alias의 별칭을 사용한다. -->
+                <insert id="insert" parameterType="BoardPostVO">
+                    <![CDATA[
+                    INSERT INTO TBL_BOARD_POST (SUBJECT, CONTENT, WRITER, REG_DATE)
+                    VALUES (#{subject}, #{content}, #{writer}, NOW())
+                    ]]>
+                </insert>
+           </mapper> 
+           ```

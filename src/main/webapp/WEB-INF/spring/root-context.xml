@@ -20,8 +20,7 @@
         <!-- <property name="url" value="jdbc:mysql://localhost:3306/udemy?characterEncoding=UTF-8&amp;serverTimezone=UTC&amp;useSSL=false"/> -->
         <!-- MyBatis 로그 라이브러리를 사용하는 경우 드라이버 및 URL 설정 -->
         <property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"/>
-        <property name="url"
-                  value="jdbc:log4jdbc:mysql://localhost:3306/udemy?characterEncoding=UTF-8&amp;serverTimezone=UTC&amp;useSSL=false"/>
+        <property name="url" value="jdbc:log4jdbc:mysql://localhost:3306/udemy?characterEncoding=UTF-8&amp;serverTimezone=UTC&amp;allowPublicKeyRetrieval=true&amp;useSSL=false"/>
         <property name="username" value="udemy"/>
         <property name="password" value="1234"/>
     </bean>
