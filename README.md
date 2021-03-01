@@ -325,3 +325,50 @@
     - 다음 페이지 : (끝 페이지 * `한 페이지당 데이터 출력 개수`) >= 전체 데이터 개수 ? false : true
 4. 데이터 출력 시작 위치(startRecordNum) 구하기
     - 데이터 출력 시작 위치 : (현재 페이지 번호 - 1) * `한 페이지당 데이터 출력 개수`
+
+---
+
+## UriComponentsBuilder를 사용해서 파라미터 유지하기
+
+1. org.spring.framework.web.util.UriComponentsBuilder는 여러 개의 파라미터들을 연결하여 하나의 URL 형태로 만들어 주는 기능을 가지고 있다.
+2. 웹 페이지에서 매번 파라미터를 유지하는 일이 번거로운 경우 사용한다.
+    - 컨트롤러에서 리다이렉트시 여러 파라미터들에 대해 일일이 addAttribute를 사용해야 하는 불편함을 해결해 준다.
+        1) 예 : 각 수정과 삭제할 때 페이지 번호, 개수, 검색 조건, 검색 키워드를 매번 넘겨줘야 하는 경우
+3. 사용방법
+   ```java
+   @RunWith(SpringJUnit4ClassRunner.class)
+   @ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/**/*.xml"})
+   public class BoardPostDAOImplTest {
+      
+        private static final Logger LOGGER = LoggerFactory.getLogger(BoardPostDAOImplTest.class);
+   
+        @Test
+        public void uriComponentsBuilderTest() throws Exception {
+              String uri = "/board/view?postId=100&numPerPage=20&stx=" + URLEncoder.encode("가나다", "UTF-8");
+              UriComponents uriComponents = UriComponentsBuilder.newInstance()
+                      .path("/board/view")
+                      .queryParam("postId", 100)
+                      .queryParam("numPerPage", 20)
+                      .queryParam("stx", "가나다")
+                      .encode()
+                      .build();
+      
+              LOGGER.info("\'" + uri + "\' eqauls uriComponents.toString() => " + uri.equals(uriComponents.toString()));
+        }
+      
+        @Test
+        public void uriComponentsBuilderTest2() throws Exception {
+              String uri = "/board/view?postId=100&numPerPage=20&stx=" + URLEncoder.encode("가나다", "UTF-8");
+              UriComponents uriComponents = UriComponentsBuilder.newInstance()
+                      .path("/{module}/{page}")
+                      .queryParam("postId", 100)
+                      .queryParam("numPerPage", 20)
+                      .queryParam("stx", "가나다")
+                      .encode()
+                      .build()
+                      .expand("board", "view");
+      
+              LOGGER.info("\'" + uri + "\' eqauls uriComponents.toString() => " + uri.equals(uriComponents.toString()));
+        }
+   }
+   ```

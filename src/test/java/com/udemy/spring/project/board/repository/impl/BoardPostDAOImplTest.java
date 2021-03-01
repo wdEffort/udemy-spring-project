@@ -13,7 +13,10 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URLEncoder;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -96,5 +99,38 @@ public class BoardPostDAOImplTest {
         for (BoardPostVO boardPost : boardPostList) {
             LOGGER.info(boardPost.toString());
         }
+    }
+
+    @Test
+    public void uriComponentsBuilderTest() throws Exception {
+        LOGGER.info("UriComponentsBuilder 테스트 - 1 ...");
+
+        String uri = "/board/view?postId=100&numPerPage=20&stx=" + URLEncoder.encode("가나다", "UTF-8");
+        UriComponents uriComponents = UriComponentsBuilder.newInstance()
+                .path("/board/view")
+                .queryParam("postId", 100)
+                .queryParam("numPerPage", 20)
+                .queryParam("stx", "가나다")
+                .encode()
+                .build();
+
+        LOGGER.info("\'" + uri + "\' eqauls uriComponents.toString() => " + uri.equals(uriComponents.toString()));
+    }
+
+    @Test
+    public void uriComponentsBuilderTest2() throws Exception {
+        LOGGER.info("UriComponentsBuilder 테스트 - 2 ...");
+
+        String uri = "/board/view?postId=100&numPerPage=20&stx=" + URLEncoder.encode("가나다", "UTF-8");
+        UriComponents uriComponents = UriComponentsBuilder.newInstance()
+                .path("/{module}/{page}")
+                .queryParam("postId", 100)
+                .queryParam("numPerPage", 20)
+                .queryParam("stx", "가나다")
+                .encode()
+                .build()
+                .expand("board", "view");
+
+        LOGGER.info("\'" + uri + "\' eqauls uriComponents.toString() => " + uri.equals(uriComponents.toString()));
     }
 }

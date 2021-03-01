@@ -18,7 +18,9 @@
             <div class="col-lg-12">
                 <div class="form-panel">
                     <form class="form-horizontal style-form" method="post" role="form">
-                        <input type="hidden" name="postId" value="${boardPost.postId}"/>
+                        <input type="hidden" name="postId" id="postId" value="${boardPost.postId}"/>
+                        <input type="hidden" name="page" id="page" value="${pageCriteria.page}"/>
+                        <input type="hidden" name="numPerPage" id="numPerPage" value="${pageCriteria.numPerPage}"/>
                         <div class="form-group">
                             <label class="col-sm-2 col-sm-2 control-label">제목</label>
                             <div class="col-sm-10">
@@ -60,19 +62,19 @@
     })();
 
     $(document).ready(function () {
-        var frmObj = $('form[role="form"]');
+        var f = $('form[role="form"]');
 
         $('.btn-info').on('click', function () {
-            location.href = '<c:url value="${pageContext.request.contextPath}/board/list"/>';
+            location.href = '<c:url value="${pageContext.request.contextPath}/board/list"/>' + '?page=' + $('#page').val() + '&numPerPage=' + $('#numPerPage').val();
         });
 
         $('.btn-danger').on('click', function () {
-            frmObj.attr('action', '/board/delete');
-            frmObj.submit();
+            f.attr('action', '/board/delete');
+            f.submit();
         });
 
         $('.btn-primary').on('click', function () {
-            location.href = '<c:url value="${pageContext.request.contextPath}/board/modify/${boardPost.postId}"/>';
+            location.href = '<c:url value="${pageContext.request.contextPath}/board/modify/${boardPost.postId}"/>' + '?page=' + $('#page').val() + '&numPerPage=' + $('#numPerPage').val();
         });
     });
 </script>

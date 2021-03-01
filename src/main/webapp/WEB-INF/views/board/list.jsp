@@ -26,7 +26,7 @@
                                 <c:forEach var="boardPost" items="${boardPostList}">
                                     <tr>
                                         <td>${boardPost.postId}</td>
-                                        <td><a href="/board/view/${boardPost.postId}">${boardPost.subject}</a></td>
+                                        <td><a href="/board/view/${boardPost.postId}${pagingMaker.makeURI(pagingMaker.pageCriteria.page)}">${boardPost.subject}</a></td>
                                         <td>${boardPost.writer}</td>
                                         <td><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${boardPost.regDate}"/></td>
                                         <td class="numeric">${boardPost.hit}</td>
@@ -39,22 +39,22 @@
                 <div class="showback text-center">
                     <div class="btn-group">
                         <c:if test="${pagingMaker.prev eq true}">
-                            <button type="button" class="btn btn-default"><a href="${pageContext.request.contextPath}/board/list?page=1"><i class="glyphicon glyphicon-backward"></i></a></button>
-                            <button type="button" class="btn btn-default"><a href="${pageContext.request.contextPath}/board/list?page=${pagingMaker.startPage - 1}"><i class="glyphicon glyphicon-chevron-left"></i></a></button>
+                            <a href="${pageContext.request.contextPath}/board/list${pagingMaker.makeURI(1)}"><button type="button" class="btn btn-default"><i class="glyphicon glyphicon-backward"></i></button></a>
+                            <a href="${pageContext.request.contextPath}/board/list${pagingMaker.makeURI(pagingMaker.startPage - 1)}"><button type="button" class="btn btn-default"><i class="glyphicon glyphicon-chevron-left"></i></button></a>
                         </c:if>
                         <c:forEach begin="${pagingMaker.startPage}" end="${pagingMaker.endPage}" var="pNum">
                             <c:choose>
                                 <c:when test="${pagingMaker.pageCriteria.page eq pNum}">
-                                    <button type="button" class="btn btn-info">${pNum}</button>
+                                    <a href="javascript:void(0);"><button type="button" class="btn btn-info">${pNum}</button></a>
                                 </c:when>
                                 <c:otherwise>
-                                    <button type="button" class="btn btn-default"><a href="<c:url value="${pageContext.request.contextPath}/board/list?page=${pNum}"/>">${pNum}</a></button>
+                                    <a href="<c:url value="${pageContext.request.contextPath}/board/list${pagingMaker.makeURI(pNum)}"/>"><button type="button" class="btn btn-default">${pNum}</button></a>
                                 </c:otherwise>
                             </c:choose>
                         </c:forEach>
                         <c:if test="${pagingMaker.next eq true}">
-                            <button type="button" class="btn btn-default"><a href="${pageContext.request.contextPath}/board/list?page=${pagingMaker.endPage + 1}"><i class="glyphicon glyphicon-chevron-right"></i></a></button>
-                            <button type="button" class="btn btn-default"><a href="${pageContext.request.contextPath}/board/list?page=${pagingMaker.finalEndPage}"><i class="glyphicon glyphicon-forward"></i></a></button>
+                            <a href="${pageContext.request.contextPath}/board/list${pagingMaker.makeURI(pagingMaker.endPage + 1)}"><button type="button" class="btn btn-default"><i class="glyphicon glyphicon-chevron-right"></i></button></a>
+                            <a href="${pageContext.request.contextPath}/board/list${pagingMaker.makeURI(pagingMaker.finalEndPage)}"><button type="button" class="btn btn-default"><i class="glyphicon glyphicon-forward"></i></button></a>
                         </c:if>
                     </div>
                 </div>

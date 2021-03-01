@@ -1,5 +1,8 @@
 package com.udemy.spring.project.utils;
 
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
+
 /**
  * 페이징 요소 출력 클래스
  */
@@ -96,5 +99,21 @@ public class PagingMaker {
 
         this.prev = this.startPage != 1;
         this.next = (this.endPage * this.pageCriteria.getNumPerPage()) < totalCount;
+    }
+
+    /**
+     * UriComponentsBuilder를 사용한 URI 생성 메소드
+     *
+     * @param page
+     * @return
+     */
+    public String makeURI(int page) {
+        UriComponents uriComponents = UriComponentsBuilder.newInstance()
+                .queryParam("page", page)
+                .queryParam("numPerPage", this.pageCriteria.getNumPerPage())
+                .encode()
+                .build();
+
+        return uriComponents.toUriString();
     }
 }
