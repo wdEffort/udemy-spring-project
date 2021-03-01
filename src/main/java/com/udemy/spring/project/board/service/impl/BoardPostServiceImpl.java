@@ -3,7 +3,7 @@ package com.udemy.spring.project.board.service.impl;
 import com.udemy.spring.project.board.repository.BoardPostDAO;
 import com.udemy.spring.project.board.service.BoardPostService;
 import com.udemy.spring.project.board.vo.BoardPostVO;
-import com.udemy.spring.project.utils.PageCriteria;
+import com.udemy.spring.project.utils.SearchCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,17 +36,12 @@ public class BoardPostServiceImpl implements BoardPostService {
     }
 
     @Override
-    public List<BoardPostVO> list() throws Exception {
-        return boardPostDAO.list();
+    public List<BoardPostVO> listCriteria(SearchCriteria searchCriteria) throws Exception {
+        return boardPostDAO.listCriteria(searchCriteria);
     }
 
     @Override
-    public List<BoardPostVO> listCriteria(PageCriteria pageCriteria) throws Exception {
-        return boardPostDAO.listCriteria(pageCriteria);
-    }
-
-    @Override
-    public int count(PageCriteria pageCriteria) throws Exception {
-        return boardPostDAO.count(pageCriteria);
+    public int count(SearchCriteria searchCriteria) throws Exception {
+        return boardPostDAO.count(searchCriteria);
     }
 }

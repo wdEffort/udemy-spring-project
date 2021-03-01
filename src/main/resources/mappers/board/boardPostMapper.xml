@@ -37,35 +37,58 @@
         ]]>
     </select>
 
-    <select id="list" resultType="BoardPostVO">
-        <![CDATA[
-        SELECT POST_ID, SUBJECT, CONTENT, WRITER, REG_DATE, HIT
-        FROM TBL_BOARD_POST
-        WHERE 1 = 1
-        ORDER BY POST_ID DESC, REG_DATE DESC
-        ]]>
-    </select>
+    <!--
+    MyBatis에서 제공하는 <include/> 태그와 <sql/> 태그
+    SQL Query문에서 중복되는 문장에 대해서 모듈화 시켜 사용할 수 있는 기능이다.
+    -->
+    <sql id="searchSql">
+        <if test="searchType != null">
+            <if test="searchType == 'S'.toString()">
+                AND SUBJECT LIKE CONCAT('%', #{searchKeyword}, '%')
+            </if>
+            <if test="searchType == 'C'.toString()">
+                AND CONTENT LIKE CONCAT('%', #{searchKeyword}, '%')
+            </if>
+            <if test="searchType == 'W'.toString()">
+                AND WRITER LIKE CONCAT('%', #{searchKeyword}, '%')
+            </if>
+            <if test="searchType == 'SC'.toString()">
+                AND (SUBJECT LIKE CONCAT('%', #{searchKeyword}, '%') OR CONTENT LIKE CONCAT('%', #{searchKeyword}, '%'))
+            </if>
+            <if test="searchType == 'CW'.toString()">
+                AND (CONTENT LIKE CONCAT('%', #{searchKeyword}, '%') OR WRITER LIKE CONCAT('%', #{searchKeyword}, '%'))
+            </if>
+            <if test="searchType == 'SCW'.toString()">
+                AND (SUBJECT LIKE CONCAT('%', #{searchKeyword}, '%') OR CONTENT LIKE CONCAT('%', #{searchKeyword}, '%')
+                OR WRITER LIKE CONCAT('%', #{searchKeyword}, '%'))
+            </if>
+        </if>
+    </sql>
 
     <!--
-    #{startPage} : PageCriteria 클래스의 getStartPage() 메소드를 호출하는 것과 같다.
-    #{numPerPage} : PageCriteria 클래스의 getNumPerPage() 메소드를 호출하는 것과 같다.
+    #{startPage} : PageCriteria 부모 클래스의 getStartPage() 메소드를 호출하는 것과 같다.
+    #{numPerPage} : PageCriteria 부모 클래스의 getNumPerPage() 메소드를 호출하는 것과 같다.
     -->
-    <select id="listCriteria" parameterType="PageCriteria" resultType="BoardPostVO">
+    <select id="listCriteria" parameterType="SearchCriteria" resultType="BoardPostVO">
         <![CDATA[
         SELECT POST_ID, SUBJECT, CONTENT, WRITER, REG_DATE, HIT
         FROM TBL_BOARD_POST
         WHERE 1 = 1
+        ]]>
+        <include refid="searchSql"></include>
+        <![CDATA[
         ORDER BY POST_ID DESC, REG_DATE DESC
             LIMIT #{startPage}, #{numPerPage}
         ]]>
     </select>
 
-    <select id="count" parameterType="PageCriteria" resultType="int">
+    <select id="count" parameterType="SearchCriteria" resultType="int">
         <![CDATA[
         SELECT COUNT(*) AS cnt
         FROM TBL_BOARD_POST
         WHERE 1 = 1
         ]]>
+        <include refid="searchSql"></include>
     </select>
 
 </mapper>

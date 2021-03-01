@@ -375,3 +375,126 @@
 
 ---
 
+## MyBatis의 표현식
+
+1. if : 조건이 하나인 경우 사용
+    - 사용 예)
+       ```xml
+       <if test="content != null">
+             // SQL Query ...        
+       </if>
+       ```
+2. choose(when, otherwise) : 주어진 조건이 여러 개인 경우 사용
+    - 사용 예)
+      ```xml
+      <choose>
+        <when test="content != null">
+            // SQL Query ...                
+        </when>
+        <when test="subject != null and postId != null">
+            // SQL Query ...        
+        </when>
+        <otherwise>
+            // SQL Query ...                
+        </otherwise>
+      </choose>
+      ```
+3. trim(set절, where절) : SQL Query를 동적으로 생성하는 경우 사용
+    - 사용 예)
+      ```xml
+      <!-- SET절에서 맨 끝에 있는 콤마(,)를 제거하는 경우 -->
+      <update id="updateMember" parameterTyp="Member">
+        UPDATE 
+            TBL_MEMBER 
+            <trim prefix="SET" suffixOverrides=",">
+                <if test="userName != null">USER_NAME = #{userName},</if>
+                <if test="email != null">EMAIL = #{email},</if>
+                <if test="tel != null">TEL = #{tel}</if>
+            </trim>
+        WHERE ID = #{id}
+      </update>
+      
+      <!-- WHERE절에서 맨 앞에 있는 연산자(AND, OR)를 제거하는 경우 -->
+      <select id="selectMember" parameterTyp="Member" resultType="Member">
+        SELECT 
+            * 
+        FROM 
+            TBL_MEMBER
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="userName != null">USER_NAME = #{userName}</if>
+            <if test="password != null">AND PASSWORD = #{password}</if>
+            <if test="email != null">AND EMAIL = #{email}</if>
+        </trim>
+      </select>
+      ```
+4. forEach : 순환 처리
+    - 사용 예)
+       ```xml
+        <foreach item="item" index="idx" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+       ```
+
+---
+
+## MyBatis \<include/\> 태그와 \<sql/\> 태그
+
+1. MyBatis에서 중복되는 문장에 대해서 모듈화 시켜 사용할 수 있는 기능이다.
+    - 사용방법
+       ```xml
+       <?xml version="1.0" encoding="UTF-8" ?>
+       <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+       
+       <mapper namespace="BoardPostMapper">
+            
+           <!-- <sql/> 태그를 이용해서 공통으로 사용할 MyBatis SQL Query 생성 -->
+           <sql id="searchSql">
+               <if test="searchType != null">
+                   <if test="searchType == 'S'.toString()">
+                       AND SUBJECT LIKE CONCAT('%', #{searchKeyword}, '%')
+                   </if>
+                   <if test="searchType == 'C'.toString()">
+                       AND CONTENT LIKE CONCAT('%', #{searchKeyword}, '%')
+                   </if>
+                   <if test="searchType == 'W'.toString()">
+                       AND WRITER LIKE CONCAT('%', #{searchKeyword}, '%')
+                   </if>
+                   <if test="searchType == 'SC'.toString()">
+                       AND (SUBJECT LIKE CONCAT('%', #{searchKeyword}, '%') OR CONTENT LIKE CONCAT('%', #{searchKeyword}, '%'))
+                   </if>
+                   <if test="searchType == 'CW'.toString()">
+                       AND (CONTENT LIKE CONCAT('%', #{searchKeyword}, '%') OR WRITER LIKE CONCAT('%', #{searchKeyword}, '%'))
+                   </if>
+                   <if test="searchType == 'SCW'.toString()">
+                       AND (SUBJECT LIKE CONCAT('%', #{searchKeyword}, '%') OR CONTENT LIKE CONCAT('%', #{searchKeyword}, '%')
+                       OR WRITER LIKE CONCAT('%', #{searchKeyword}, '%'))
+                   </if>
+               </if>
+           </sql>
+       
+           <!-- <include/> 태그를 사용하여 <sql/> 태그로 선언한 공통 쿼리를 SQL 사이로 넣어준다. -->
+           <select id="listCriteria" parameterType="SearchCriteria" resultType="BoardPostVO">
+               <![CDATA[
+               SELECT POST_ID, SUBJECT, CONTENT, WRITER, REG_DATE, HIT
+               FROM TBL_BOARD_POST
+               WHERE 1 = 1
+               ]]>
+               <include refid="searchSql"></include>
+               <![CDATA[
+               ORDER BY POST_ID DESC, REG_DATE DESC
+                   LIMIT #{startPage}, #{numPerPage}
+               ]]>
+           </select>
+
+           <!-- <include/> 태그를 사용하여 <sql/> 태그로 선언한 공통 쿼리를 SQL 사이로 넣어준다. -->
+           <select id="count" parameterType="SearchCriteria" resultType="int">
+               <![CDATA[
+               SELECT COUNT(*) AS cnt
+               FROM TBL_BOARD_POST
+               WHERE 1 = 1
+               ]]>
+               <include refid="searchSql"></include>
+           </select>
+       
+       </mapper>
+       ```

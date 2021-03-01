@@ -3,7 +3,7 @@ package com.udemy.spring.project.board.repository.impl;
 
 import com.udemy.spring.project.board.repository.BoardPostDAO;
 import com.udemy.spring.project.board.vo.BoardPostVO;
-import com.udemy.spring.project.utils.PageCriteria;
+import com.udemy.spring.project.utils.SearchCriteria;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -80,21 +80,18 @@ public class BoardPostDAOImplTest {
     }
 
     @Test
-    public void listTest() throws Exception {
-        LOGGER.info("게시글 목록 조회 테스트 ...");
-
-        //LOGGER.info(boardPostDAO.list().toString());
-    }
-
-    @Test
     public void listCriteriaTest() throws Exception {
-        LOGGER.info("PageCriteria를 이용한 게시글 목록 조회 페이징 테스트 ...");
+        LOGGER.info("SearchCriteria 이용한 게시글 목록 검색 조회 및 페이징 테스트 ...");
 
-        PageCriteria pageCriteria = new PageCriteria();
-        pageCriteria.setPage(3);
-        pageCriteria.setNumPerPage(30);
+        SearchCriteria searchCriteria = new SearchCriteria();
+        searchCriteria.setPage(1);
+        searchCriteria.setNumPerPage(10);
+        searchCriteria.setSearchType("W");
+        searchCriteria.setSearchKeyword("관리자");
 
-        List<BoardPostVO> boardPostList = boardPostDAO.listCriteria(pageCriteria);
+        LOGGER.info("총 데이터 개수 : " + boardPostDAO.count(searchCriteria));
+
+        List<BoardPostVO> boardPostList = boardPostDAO.listCriteria(searchCriteria);
 
         for (BoardPostVO boardPost : boardPostList) {
             LOGGER.info(boardPost.toString());
