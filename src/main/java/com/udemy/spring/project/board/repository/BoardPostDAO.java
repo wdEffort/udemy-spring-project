@@ -19,5 +19,5 @@ public interface BoardPostDAO {
 
     List<BoardPostVO> listCriteria(PageCriteria pageCriteria) throws Exception;
 
-    int count();
+    int count(PageCriteria pageCriteria);
 }

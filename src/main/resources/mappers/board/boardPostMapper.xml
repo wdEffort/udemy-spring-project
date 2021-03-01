@@ -60,7 +60,7 @@
         ]]>
     </select>
 
-    <select id="count" resultType="int">
+    <select id="count" parameterType="PageCriteria" resultType="int">
         <![CDATA[
         SELECT COUNT(*) AS cnt
         FROM TBL_BOARD_POST

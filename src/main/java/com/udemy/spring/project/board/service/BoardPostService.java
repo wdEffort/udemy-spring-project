@@ -19,5 +19,5 @@ public interface BoardPostService {
 
     List<BoardPostVO> listCriteria(PageCriteria pageCriteria) throws Exception;
 
-    int count() throws Exception;
+    int count(PageCriteria pageCriteria) throws Exception;
 }

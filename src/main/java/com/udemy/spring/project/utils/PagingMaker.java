@@ -102,7 +102,7 @@ public class PagingMaker {
     }
 
     /**
-     * UriComponentsBuilder를 사용한 URI 생성 메소드
+     * UriComponentsBuilder를 사용한 페이징 URI 생성 메소드
      *
      * @param page
      * @return
@@ -111,6 +111,24 @@ public class PagingMaker {
         UriComponents uriComponents = UriComponentsBuilder.newInstance()
                 .queryParam("page", page)
                 .queryParam("numPerPage", this.pageCriteria.getNumPerPage())
+                .encode()
+                .build();
+
+        return uriComponents.toUriString();
+    }
+
+    /**
+     * UriComponentsBuilder를 사용한 검색 URI 생성 메소드
+     *
+     * @param page
+     * @return
+     */
+    public String makeSearchURI(int page) {
+        UriComponents uriComponents = UriComponentsBuilder.newInstance()
+                .queryParam("page", page)
+                .queryParam("numPerPage", this.pageCriteria.getNumPerPage())
+                .queryParam("searchType", ((SearchCriteria) this.pageCriteria).getSearchType())
+                .queryParam("searchKeyword", ((SearchCriteria) this.pageCriteria).getSearchKeyword())
                 .encode()
                 .build();
 

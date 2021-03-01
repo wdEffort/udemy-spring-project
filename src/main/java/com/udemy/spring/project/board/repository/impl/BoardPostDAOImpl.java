@@ -48,7 +48,7 @@ public class BoardPostDAOImpl implements BoardPostDAO {
     }
 
     @Override
-    public int count() {
-        return sqlSession.selectOne(SQL_MAPPER_NAMESPACE + ".count");
+    public int count(PageCriteria pageCriteria) {
+        return sqlSession.selectOne(SQL_MAPPER_NAMESPACE + ".count", pageCriteria);
     }
 }

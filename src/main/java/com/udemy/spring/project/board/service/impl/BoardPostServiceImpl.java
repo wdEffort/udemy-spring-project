@@ -46,7 +46,7 @@ public class BoardPostServiceImpl implements BoardPostService {
     }
 
     @Override
-    public int count() throws Exception {
-        return boardPostDAO.count();
+    public int count(PageCriteria pageCriteria) throws Exception {
+        return boardPostDAO.count(pageCriteria);
     }
 }
