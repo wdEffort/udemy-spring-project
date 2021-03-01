@@ -19,8 +19,10 @@
                 <div class="form-panel">
                     <form class="form-horizontal style-form" method="post" role="form">
                         <input type="hidden" name="postId" id="postId" value="${boardPost.postId}"/>
-                        <input type="hidden" name="page" id="page" value="${pageCriteria.page}"/>
-                        <input type="hidden" name="numPerPage" id="numPerPage" value="${pageCriteria.numPerPage}"/>
+                        <input type="hidden" name="page" id="page" value="${searchCriteria.page}"/>
+                        <input type="hidden" name="numPerPage" id="numPerPage" value="${searchCriteria.numPerPage}"/>
+                        <input type="hidden" name="searchType" id="searchType" value="${searchCriteria.searchType}"/>
+                        <input type="hidden" name="searchKeyword" id="searchKeyword" value="${searchCriteria.searchKeyword}"/>
                         <div class="form-group">
                             <label class="col-sm-2 col-sm-2 control-label">제목</label>
                             <div class="col-sm-10">
@@ -65,7 +67,11 @@
         var f = $('form[role="form"]');
 
         $('.btn-info').on('click', function () {
-            location.href = '<c:url value="${pageContext.request.contextPath}/board/list"/>' + '?page=' + $('#page').val() + '&numPerPage=' + $('#numPerPage').val();
+            location.href = '<c:url value="${pageContext.request.contextPath}/board/list"/>'
+                + '?page=' + $('#page').val()
+                + '&numPerPage=' + $('#numPerPage').val()
+                + '&searchType=' + $('#searchType').val()
+                + '&searchKeyword=' + $('#searchKeyword').val();
         });
 
         $('.btn-danger').on('click', function () {
@@ -74,7 +80,11 @@
         });
 
         $('.btn-primary').on('click', function () {
-            location.href = '<c:url value="${pageContext.request.contextPath}/board/modify/${boardPost.postId}"/>' + '?page=' + $('#page').val() + '&numPerPage=' + $('#numPerPage').val();
+            location.href = '<c:url value="${pageContext.request.contextPath}/board/modify/${boardPost.postId}"/>'
+                + '?page=' + $('#page').val()
+                + '&numPerPage=' + $('#numPerPage').val()
+                + '&searchType=' + $('#searchType').val()
+                + '&searchKeyword=' + $('#searchKeyword').val();
         });
     });
 </script>

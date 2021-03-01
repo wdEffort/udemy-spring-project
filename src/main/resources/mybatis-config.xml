@@ -7,7 +7,7 @@
     또한, 컬럼명이 'user_name'이라면 Entity 클래스의 멤버 변수 'userName'과 자동 매핑 되도록 설정한다.
      -->
     <settings>
-        <setting name="mapUnderscoreToCamelCase" value="t   rue"/>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
     </settings>
 
     <typeAliases>

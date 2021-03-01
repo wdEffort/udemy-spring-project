@@ -67,14 +67,14 @@ public class BoardPostController {
      * 글 보기 화면
      *
      * @param postId
-     * @param pageCriteria PageCriteria를 Model에 담아서 전달해서 현재 페이지 번호와 한 페이지당 데이터 출력 개수 파라미터를 유지한다.
+     * @param searchCriteria SearchCriteria Model에 담아서 전달해서 현재 페이지 번호와 한 페이지당 데이터 출력 개수, 검색 파라미터를 유지한다.
      * @param model
      * @return
      * @throws Exception
      */
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     public String getBoardPostViewPage(@PathVariable("id") Integer postId,
-                                       @ModelAttribute("pageCriteria") PageCriteria pageCriteria,
+                                       @ModelAttribute("searchCriteria") SearchCriteria searchCriteria,
                                        Model model) throws Exception {
         BoardPostVO boardPost = boardPostService.read(postId);
 
@@ -92,12 +92,13 @@ public class BoardPostController {
      *
      * @param postId
      * @param model
+     * @param searchCriteria
      * @return
      * @throws Exception
      */
     @RequestMapping(value = "/modify/{id}", method = RequestMethod.GET)
     public String getBoardPostModifyPage(@PathVariable("id") Integer postId,
-                                         @ModelAttribute("pageCriteria") PageCriteria pageCriteria,
+                                         @ModelAttribute("searchCriteria") SearchCriteria searchCriteria,
                                          Model model) throws Exception {
         BoardPostVO boardPost = boardPostService.read(postId);
 
@@ -115,7 +116,7 @@ public class BoardPostController {
      *
      * @param vo
      * @param result
-     * @param pageCriteria       PageCriteria를 Model에 담아서 전달해서 현재 페이지 번호와 한 페이지당 데이터 출력 개수 파라미터를 유지한다.
+     * @param searchCriteria     PageCriteria를 Model에 담아서 전달해서 현재 페이지 번호와 한 페이지당 데이터 출력 개수, 검색 파라미터를 유지한다.
      * @param redirectAttributes
      * @return
      * @throws Exception
@@ -123,7 +124,7 @@ public class BoardPostController {
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public String update(@ModelAttribute("vo") BoardPostVO vo,
                          BindingResult result,
-                         @ModelAttribute("pageCriteria") PageCriteria pageCriteria,
+                         @ModelAttribute("searchCriteria") SearchCriteria searchCriteria,
                          RedirectAttributes redirectAttributes) throws Exception {
         BoardPostValidator boardPostValidator = new BoardPostValidator();
         boardPostValidator.validate(vo, result);
@@ -134,8 +135,10 @@ public class BoardPostController {
 
         boardPostService.update(vo);
 
-        redirectAttributes.addAttribute("page", pageCriteria.getPage());
-        redirectAttributes.addAttribute("numPerPage", pageCriteria.getNumPerPage());
+        redirectAttributes.addAttribute("page", searchCriteria.getPage()); // URL Query String으로 붙게 된다.
+        redirectAttributes.addAttribute("numPerPage", searchCriteria.getNumPerPage());
+        redirectAttributes.addAttribute("searchType", searchCriteria.getSearchType());
+        redirectAttributes.addAttribute("searchKeyword", searchCriteria.getSearchKeyword());
         redirectAttributes.addFlashAttribute("message", "글 수정이 완료되었습니다.");
 
         return "redirect:/board/view/" + vo.getPostId();
@@ -145,19 +148,21 @@ public class BoardPostController {
      * 글 삭제
      *
      * @param vo
-     * @param pageCriteria       PageCriteria를 Model에 담아서 전달해서 현재 페이지 번호와 한 페이지당 데이터 출력 개수 파라미터를 유지한다.
+     * @param searchCriteria     PageCriteria를 Model에 담아서 전달해서 현재 페이지 번호와 한 페이지당 데이터 출력 개수, 검색 파라미터를 유지한다.
      * @param redirectAttributes
      * @return
      * @throws Exception
      */
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public String delete(BoardPostVO vo,
-                         @ModelAttribute("pageCriteria") PageCriteria pageCriteria,
+                         @ModelAttribute("searchCriteria") SearchCriteria searchCriteria,
                          RedirectAttributes redirectAttributes) throws Exception {
         boardPostService.delete(vo.getPostId());
 
-        redirectAttributes.addAttribute("page", pageCriteria.getPage()); // URL Query String으로 붙게 된다.
-        redirectAttributes.addAttribute("numPerPage", pageCriteria.getNumPerPage());
+        redirectAttributes.addAttribute("page", searchCriteria.getPage()); // URL Query String으로 붙게 된다.
+        redirectAttributes.addAttribute("numPerPage", searchCriteria.getNumPerPage());
+        redirectAttributes.addAttribute("searchType", searchCriteria.getSearchType());
+        redirectAttributes.addAttribute("searchKeyword", searchCriteria.getSearchKeyword());
         redirectAttributes.addFlashAttribute("message", "글 삭제가 완료되었습니다."); // 리다이렉트 되는 페이지에서 딱 한번 사용할 데이터를 설정한다.
 
         return "redirect:/board/list";
