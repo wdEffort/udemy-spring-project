@@ -492,9 +492,74 @@
                SELECT COUNT(*) AS cnt
                FROM TBL_BOARD_POST
                WHERE 1 = 1
-               ]]>
+               ]]>  
                <include refid="searchSql"></include>
            </select>
        
        </mapper>
        ```
+
+---
+
+## SOAP(Simple Object Access Protocol) 기반 웹 서비스
+
+1. SOAP은 일반적으로 널리 알려진 HTTP, HTTPS, SMTP 등을 통해 XML 기반의 메시지를 컴퓨터 네트워크 상에서 교환하는 프로토콜이다.
+    - SOA(Service Oriented Architecture) : 해당 서비스를 서로 조합해서 업무 기능을 구현한 어플리케이션을 만들어 내는 소프트웨어 아키텍처
+    - Data: XML로 표현된다.
+    - UDDI(Universal Description, Discovery and Integration) : 웹 서비스를 등록하고 검색하기 위한 저장소로 웹 서비스를 공적으로 접근, 검색이 가능하도록 한 공개된
+      레지스트리
+    - WSDL(Wewb Service Description Language) : 웹 서비스 기술 언어로써 XML로 기술된다.
+      ```xml
+      <definitions>
+        <!-- s:Service Interface(추상 정보) -->
+        <types>
+            데이터 타입 선언
+        </types>
+        <message>
+            메소드의 인자와 리턴 값 선언
+        </message>
+        <portType>
+            인터페이스 정의
+            <operation>메소드 선언</operation>
+        </portType>
+        <!-- e:Service Interface(추상 정보) -->
+        <!-- s:Service Implementation(구현 정보) -->
+        <binding>
+            실제 네트워크 프로토콜과 portType 매핑
+        </binding>
+        <service>
+            서비스 정의(Endpoint)
+            <port>웹 서비스 URL</port>         
+        </service>
+        <!-- e:Service Implementation(구현 정보) -->
+      </definitions>
+      ```
+2. 상호 통신간 프로그램들이 잘 이해할 수 있는 문법에 따라 개발 되었고, 그에 따라서 개발자들은 웹 서비스의 기본 스펙을 알아야 하는 고난이도 프로그래밍 능력이 요구 됨.
+3. 장점
+    - 동적 바인딩이 가능
+    - 독립접 모듈
+    - 서비스 연결이 느슨하게 연결
+    - 서비스 조립이 가능
+    - 플랫폼과 무관
+4. 단점
+    - HTTP 상에서 전송하기에 무거움
+    - 개발 난이도가 높음
+
+---
+
+## RESTful 기반 웹 서비스
+
+1. Roy Fielding이 박사 학위 논문에서 웹 아키텍쳐가 웹의 본래 설계의 우수성을 활용하지 못하므로 웹의 장점을 최대한 활용할 수 있는 네트워크 기반의 아키텍처를 제안하였다.
+    - RESTful(REpresentational State Transfer, 2000년)
+        1) HTTP 프로토콜로 데이터를 전달하는 프레임워크
+        2) 클라이언트와 서버간의 구성요소를 엄격하게 분리하여 구현을 단순화 함
+        3) 서버와 클라이언트를 독립적으로 구현함으로써 확장성을 향상시킴
+        4) 핵심은 WEB에 개방된 리소스를 이용한다.
+2. REST는 웹에 개발된 리소스들을 원격 또는 로컬에서 쉽게 이용할 수 있는 웹 응용을 정착
+3. REST 아키텍쳐 스타일에 따라 정의되고 이용되는 서비스나 응용프로그램을 RESTful 웹 서비스라고 한다.
+    - SOA(Service Oriented Architecture) : 서비스 지향 아키텍쳐
+    - ROA(Resource Oriented Architecture) : 자원 지향 아키텍쳐
+4. SOAP 기반 웹 서비스는 SOA 구조에 따라서 UDDI 레지스트리를 통해서 웹 서비스를 등록하고, 탐색하고, 바인딩해서 이용한다면, RESTful 기반 웹 서비스는 리소스를 등록하고 저장하는 중간 매개체 없이
+   리소스 제공자가 직접 요청자에게 제공하는 형태이다.
+    - 인터넷 서비스 업체들이 응용 개발자들에 손 쉬운 데이터 제공을 목적으로 출발함.
+    - 기계보다는 사람이 이해하기 쉽도록 인터넷 기본(HTTP, XML) 이외에 별도의 개발, 실행 환경이 필요없음.
