@@ -1,6 +1,8 @@
 package com.udemy.spring.project.rest.controller;
 
 import com.udemy.spring.project.rest.vo.StudentVO;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -93,5 +95,48 @@ public class DemoController {
         }
 
         return studentMap;
+    }
+
+    /**
+     * HTTP 상태 코드 반환
+     *
+     * @return
+     */
+    @RequestMapping(value = "/errorCode", method = RequestMethod.GET)
+    public ResponseEntity<Void> errorCode() {
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST); // 400
+    }
+
+    /**
+     * HTTP 상태 코드와 데이터를 반환
+     *
+     * @return
+     */
+    @RequestMapping(value = "/errorCodeData", method = RequestMethod.GET)
+    public ResponseEntity<List<StudentVO>> errorCodeData() {
+        List<StudentVO> studentList = new ArrayList<>();
+
+        StudentVO studentVO1 = new StudentVO();
+        studentVO1.setNo(1);
+        studentVO1.setName("홍길동");
+        studentVO1.setGrade(4);
+
+        studentList.add(studentVO1);
+
+        StudentVO studentVO2 = new StudentVO();
+        studentVO2.setNo(2);
+        studentVO2.setName("김길동");
+        studentVO2.setGrade(5);
+
+        studentList.add(studentVO2);
+
+        StudentVO studentVO3 = new StudentVO();
+        studentVO3.setNo(3);
+        studentVO3.setName("박길동");
+        studentVO3.setGrade(6);
+
+        studentList.add(studentVO3);
+
+        return new ResponseEntity<>(studentList, HttpStatus.NOT_FOUND); // 404
     }
 }
