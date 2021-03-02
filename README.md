@@ -563,3 +563,37 @@
    리소스 제공자가 직접 요청자에게 제공하는 형태이다.
     - 인터넷 서비스 업체들이 응용 개발자들에 손 쉬운 데이터 제공을 목적으로 출발함.
     - 기계보다는 사람이 이해하기 쉽도록 인터넷 기본(HTTP, XML) 이외에 별도의 개발, 실행 환경이 필요없음.
+
+---
+
+## RestController 작성
+
+1. 컨트롤러 클래스에 리소스(JSON, XML, 문자열) 자체를 반환하도록 `@RestController` 어노테이션을 사용한다.
+    - JSON 문자열을 반환해야 하는 경우 JSON 문자열을 처리할 수 있는 라이브러리 의존 설정을 추가해야 한다.
+      ```java
+      @RestController
+      @RequestMapping("/demo")
+      public class DemoController {
+      
+          @RequestMapping(value = "/students/1", method = RequestMethod.GET)
+          public StudentVO studentInfo() {
+              StudentVO studentVO = new StudentVO();
+              studentVO.setNo(1);
+              studentVO.setName("홍길동");
+              studentVO.setGrade(6);
+      
+              return studentVO;
+          }
+      }
+      ```
+2. pom.xml에 JSON 문자열 처리를 위한 `jackson.core` 의존 설정
+   ```xml
+   <dependencies>
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.12.1</version>
+        </dependency>
+   </dependencies>
+   ```
