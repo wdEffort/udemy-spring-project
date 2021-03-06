@@ -43,6 +43,56 @@ public class BoardCommentController {
     }
 
     /**
+     * 댓글 수정
+     * 요청 JSON 문자열(예) {"cmtContent" : "댓글 수정-1 테스트입니다."}
+     *
+     * @param cmtId 댓글 고유번호
+     * @param vo    JSON 문자열을 BoardCommentVO 타입의 객체로 변환하여 처리한다.
+     * @return
+     */
+    @RequestMapping(value = "/{cmtId}", method = {RequestMethod.PUT, RequestMethod.PATCH})
+    public ResponseEntity<String> update(@PathVariable("cmtId") Integer cmtId, @RequestBody BoardCommentVO vo) {
+        ResponseEntity<String> entity = null;
+
+        try {
+            vo.setCmtId(cmtId);
+
+            boardCommentService.update(vo);
+
+            entity = new ResponseEntity<>("success", HttpStatus.OK); // 200
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            entity = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST); // 400
+        }
+
+        return entity;
+    }
+
+    /**
+     * 댓글 삭제
+     *
+     * @param cmtId 댓글 고유번호
+     * @return
+     */
+    @RequestMapping(value = "/{cmtId}", method = RequestMethod.DELETE)
+    public ResponseEntity<String> delete(@PathVariable("cmtId") Integer cmtId) {
+        ResponseEntity<String> entity = null;
+
+        try {
+            boardCommentService.delete(cmtId);
+
+            entity = new ResponseEntity<>("success", HttpStatus.OK); // 200
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            entity = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST); // 400
+        }
+
+        return entity;
+    }
+
+    /**
      * 댓글 목록 조회
      *
      * @param postId 게시글 고유번호
