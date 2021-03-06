@@ -54,5 +54,21 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
+    <!--
+    GET, POST 요청 Method만을 지원하는 브라우저에서
+    PUT, PATCH, DELETE 요청 Method도 처리할 수 있도록 스프링에서 지원하는 Filter를 등록한다.
+
+    <form/> 태그에서 '_method="PUT"'과 같이 히든 속성을 사용는 방식과
+    AJAX에서 'X-HTTP-Method-Override' 속성을 Header에 설정해 주는 방식이 있다.
+    -->
+    <filter>
+        <filter-name>hiddenHttpMethodFilter</filter-name>
+        <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>hiddenHttpMethodFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
 </web-app>
 

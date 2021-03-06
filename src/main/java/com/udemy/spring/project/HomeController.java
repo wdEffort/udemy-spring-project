@@ -18,4 +18,9 @@ public class HomeController {
 
         return "index";
     }
+
+    @RequestMapping(value = "/ajax/test", method = RequestMethod.GET)
+    public String getAjaxTestPage() {
+        return "ajax/test";
+    }
 }
