@@ -19,7 +19,9 @@ public class BoardCommentController {
 
     /**
      * 댓글 등록
-     * 요청 JSON 문자열(예) {"postId" : 1, "cmtContent" : "댓글 테스트입니다.", "writer" : "관리자"}
+     * 요청 JSON 문자열(예-1) {"postId" : 1, "cmtContent" : "댓글 테스트입니다.", "writer" : "관리자"}
+     * 요청 JSON 문자열(예-2) {"postId" : "1", "cmtContent" : "댓글 테스트입니다.", "writer" : "관리자"}
+     * JSON 문자열 예-2에서 "postId" Key의 값이 문자열로 주어진 경우 내부적으로 형변환이 이루어 진다.
      *
      * @param vo JSON 문자열을 BoardCommentVO 타입의 객체로 변환하여 처리한다.
      * @return
