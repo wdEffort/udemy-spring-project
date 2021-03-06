@@ -1,6 +1,6 @@
-package com.udemy.spring.project.rest.controller;
+package com.udemy.spring.project.restfull.controller;
 
-import com.udemy.spring.project.rest.vo.StudentVO;
+import com.udemy.spring.project.restfull.vo.StudentVO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;

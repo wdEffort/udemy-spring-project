@@ -666,9 +666,9 @@
 1. HTTP 상태 코드를 반환할 수 있는 클래스이다.
     - 덧붙여 상태 코드와 함께 데이터를 반환시킬 수도 있다.
       ```java
-      package com.udemy.spring.project.rest.controller;
+      package com.udemy.spring.project.restfull.controller;
       
-      import com.udemy.spring.project.rest.vo.StudentVO;
+      import com.udemy.spring.project.restfull.vo.StudentVO;
       import org.springframework.http.HttpStatus;
       import org.springframework.http.ResponseEntity;
       import org.springframework.web.bind.annotation.RequestMapping;

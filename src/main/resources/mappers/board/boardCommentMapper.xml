@@ -52,4 +52,29 @@
         ORDER BY CMT_ID DESC
         ]]>
     </select>
+
+    <select id="listPage" parameterType="Map" resultType="BoardCommentVO">
+        <![CDATA[
+        SELECT CMT_ID
+             , POST_ID
+             , CMT_CONTENT
+             , WRITER
+             , REG_DATE
+             , UPDATE_DATE
+        FROM TBL_BOARD_COMMENT
+        WHERE 1 = 1
+          AND POST_ID = #{postId}
+        ORDER BY CMT_ID DESC
+            LIMIT #{pageCriteria.startPage}, #{pageCriteria.numPerPage}
+        ]]>
+    </select>
+
+    <select id="count" parameterType="Integer" resultType="int">
+        <![CDATA[
+        SELECT COUNT(1) AS cnt
+        FROM TBL_BOARD_COMMENT
+        WHERE 1 = 1
+          AND POST_ID = #{postId}
+        ]]>
+    </select>
 </mapper>

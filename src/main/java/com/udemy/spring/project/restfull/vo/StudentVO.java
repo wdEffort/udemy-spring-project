@@ -1,4 +1,4 @@
-package com.udemy.spring.project.rest.vo;
+package com.udemy.spring.project.restfull.vo;
 
 public class StudentVO {
 
