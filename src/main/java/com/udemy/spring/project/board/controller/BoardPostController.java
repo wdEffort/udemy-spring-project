@@ -3,7 +3,6 @@ package com.udemy.spring.project.board.controller;
 import com.udemy.spring.project.board.service.BoardPostService;
 import com.udemy.spring.project.board.validator.BoardPostValidator;
 import com.udemy.spring.project.board.vo.BoardPostVO;
-import com.udemy.spring.project.utils.PageCriteria;
 import com.udemy.spring.project.utils.PagingMaker;
 import com.udemy.spring.project.utils.SearchCriteria;
 import org.springframework.beans.factory.annotation.Autowired;

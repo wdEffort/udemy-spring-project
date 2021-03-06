@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="BoardCommentMapper">
+
+    <insert id="insert" parameterType="BoardCommentVO">
+        <![CDATA[
+        INSERT INTO TBL_BOARD_COMMENT (POST_ID, CMT_CONTENT, WRITER)
+        VALUES (#{postId}, #{cmtContent}, #{writer})
+        ]]>
+    </insert>
+
+    <update id="update" parameterType="BoardCommentVO">
+        <![CDATA[
+        UPDATE TBL_BOARD_COMMENT
+        SET CMT_CONTENT = #{cmtContent},
+            UPDATE_DATE = NOW()
+        WHERE 1 = 1
+          AND CMT_ID = #{cmtId} LIMIT 1
+        ]]>
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+        <![CDATA[
+        DELETE
+        FROM TBL_BOARD_COMMENT
+        WHERE 1 = 1
+          AND CMT_ID = #{cmtId} LIMIT 1
+        ]]>
+    </delete>
+
+    <select id="" parameterType="Integer" resultType="BoardCommentVO">
+        <![CDATA[
+        SELECT CMT_ID
+             , POST_ID
+             , CMT_CONTENT
+             , WRITER
+             , REG_DATE
+             , UPDATE_DATE
+        FROM TBL_BOARD_COMMENT
+        WHERE 1 = 1
+          AND POST_ID = #{postId}
+        ORDER BY CMT_ID DESC
+        ]]>
+    </select>
+</mapper>

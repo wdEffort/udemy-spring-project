@@ -620,3 +620,85 @@
     - 502 : 게이트웨이, 프록시 상태의 문제(과부하 등)
     - 503 : 일시적인 서비스 중단 상태
     - 504 : 지정된 처리 시간이 지나서 처리되지 못하는 경우
+
+---
+
+## HTTP Method
+
+1. `GET` : REST에서 조회와 관련된 Methodl
+2. `POST` : REST에서 등록과 관련된 Method
+3. `PUT`, `PATCH` : REST에서 수정과 관련된 Method
+4. `DELETE` : REST에서 삭제와 관련된 Method
+
+---
+
+## AJAX(Asynchronous Javascript And XML)
+
+1. 동적 웹 어플리케이션을 구현하는데 필요한 기술이다.
+    - 장점
+        1) 비동기 방식으로 페이지 새로고침 없이 받은 데이터를 가공하여 표시할 수 있다.
+        2) 갱신 시킬 페이지에 소량의 데이터 블록만 서버로부터 수신하기 때문에 서버 및 네트워크 부하를 줄일 수 있다.
+2. REST + AJAX 방식을 이용해서 웹 애플리케이션을 제작하는 것이 최근 가장 많이 사용하는 방식이다.
+    - REST는 데이터를 리턴(호출)하고 사용하는 방식이라면, AJAX는 그러한 데이터를 이용하는 방법(수단)이다.
+
+---
+
+## @RequestBody 어노테이션
+
+1. @RequestBody 어노테이션은 Spring MVC에서 전송된 데이터를 객체로 변환시켜주는 어노테이션으로 @ModelAttribute 어노테이션과 동일한 기능을 하지만 `JSON 문자열을 사용`하는 것에서
+   차이가 있다.
+
+---
+
+## ResponseEntity<T> 클래스
+
+1. HTTP 상태 코드를 반환할 수 있는 클래스이다.
+    - 덧붙여 상태 코드와 함께 데이터를 반환시킬 수도 있다.
+      ```java
+      package com.udemy.spring.project.rest.controller;
+      
+      import com.udemy.spring.project.rest.vo.StudentVO;
+      import org.springframework.http.HttpStatus;
+      import org.springframework.http.ResponseEntity;
+      import org.springframework.web.bind.annotation.RequestMapping;
+      import org.springframework.web.bind.annotation.RequestMethod;
+      import org.springframework.web.bind.annotation.RestController;
+      
+      import java.util.ArrayList;
+      import java.util.List;
+
+      // @RestController 어노테이션은 리소스(데이터) 자체를 반환 하는데 사용하는 어노테이션이다.(JSON, XML, 문자열)
+      // @RestController 어노테이션이 설정된 컨트롤러에서는 각 메소드에 @ResponseBody 어노테이션이 생략된 것과 같다.
+      @RestController
+      @RequestMapping("/demo")
+      public class DemoController {
+      
+          @RequestMapping(value = "/errorCodeData", method = RequestMethod.GET)
+          public ResponseEntity<List<StudentVO>> errorCodeData() {
+              List<StudentVO> studentList = new ArrayList<>();
+      
+              StudentVO studentVO1 = new StudentVO();
+              studentVO1.setNo(1);
+              studentVO1.setName("홍길동");
+              studentVO1.setGrade(4);
+      
+              studentList.add(studentVO1);
+      
+              StudentVO studentVO2 = new StudentVO();
+              studentVO2.setNo(2);
+              studentVO2.setName("김길동");
+              studentVO2.setGrade(5);
+      
+              studentList.add(studentVO2);
+      
+              StudentVO studentVO3 = new StudentVO();
+              studentVO3.setNo(3);
+              studentVO3.setName("박길동");
+              studentVO3.setGrade(6);
+      
+              studentList.add(studentVO3);
+      
+              return new ResponseEntity<>(studentList, HttpStatus.NOT_FOUND); // HTTP 상태 코드(404)와 데이터를 반환
+          }
+      }
+      ```
