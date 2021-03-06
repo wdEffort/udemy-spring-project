@@ -1,6 +1,7 @@
 package com.udemy.spring.project.board.repository.impl;
 
 
+import com.udemy.spring.project.board.repository.BoardCommentDAO;
 import com.udemy.spring.project.board.repository.BoardPostDAO;
 import com.udemy.spring.project.board.vo.BoardPostVO;
 import com.udemy.spring.project.utils.SearchCriteria;
@@ -27,6 +28,9 @@ public class BoardPostDAOImplTest {
 
     @Autowired
     private BoardPostDAO boardPostDAO;
+
+    @Autowired
+    private BoardCommentDAO boardCommentDAO;
 
     @Test
     @Transactional
@@ -75,7 +79,9 @@ public class BoardPostDAOImplTest {
     @Rollback(value = true)
     public void deleteTest() throws Exception {
         LOGGER.info("게시글 삭제 테스트 ...");
+        LOGGER.info("게시글에 등록된 댓글 모두 삭제 후 게시글 삭제 ...");
 
+        boardCommentDAO.deleteByPostId(1);
         boardPostDAO.delete(1);
     }
 

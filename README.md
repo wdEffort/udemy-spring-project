@@ -625,10 +625,21 @@
 
 ## HTTP Method
 
-1. `GET` : REST에서 조회와 관련된 Methodl
+1. `GET` : REST에서 조회와 관련된 Method
+    - URI 예
+        1) 게시글에 달린 댓글 목록 조회 : /board/comments/{게시글 고유번호} => /board/comments/10
+        2) 게시글에 달린 댓글 한건 조회 : /board/comments/{게시글 고유번호}/{댓글 고유번호} => /board/comments/10/1
 2. `POST` : REST에서 등록과 관련된 Method
+    - URI 예
+        1) 댓글 등록 : /board/comments
+            - 데이터를 JSON 문자열로 전송
 3. `PUT`, `PATCH` : REST에서 수정과 관련된 Method
+    - URI 예
+        1) 댓글 수정 : /board/comments
+            - 데이터를 JSON 문자열로 전송
 4. `DELETE` : REST에서 삭제와 관련된 Method
+    - URI 예
+        1) 댓글 삭제 : /board/comments/{댓글 고유번호} => /board/comments/1
 
 ---
 

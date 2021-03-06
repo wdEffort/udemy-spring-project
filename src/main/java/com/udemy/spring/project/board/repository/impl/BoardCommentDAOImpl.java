@@ -23,13 +23,18 @@ public class BoardCommentDAOImpl implements BoardCommentDAO {
 
     @Override
     public void update(BoardCommentVO vo) throws Exception {
-        sqlSession.insert(SQL_MAPPER_NAMESPACE + ".update", vo);
+        sqlSession.update(SQL_MAPPER_NAMESPACE + ".update", vo);
 
     }
 
     @Override
     public void delete(Integer id) throws Exception {
-        sqlSession.insert(SQL_MAPPER_NAMESPACE + ".delete", id);
+        sqlSession.delete(SQL_MAPPER_NAMESPACE + ".delete", id);
+    }
+
+    @Override
+    public void deleteByPostId(Integer id) throws Exception {
+        sqlSession.delete(SQL_MAPPER_NAMESPACE + ".deleteByPostId", id);
     }
 
     @Override

@@ -12,5 +12,7 @@ public interface BoardCommentService {
 
     void delete(Integer id) throws Exception;
 
+    void deleteByPostId(Integer id) throws Exception;
+
     List<BoardCommentVO> list(Integer postId) throws Exception;
 }

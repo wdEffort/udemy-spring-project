@@ -5,10 +5,9 @@ import com.udemy.spring.project.board.vo.BoardCommentVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/board/comments")
@@ -38,6 +37,27 @@ public class BoardCommentController {
             e.printStackTrace();
 
             entity = new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST); // 400
+        }
+
+        return entity;
+    }
+
+    /**
+     * 댓글 목록 조회
+     *
+     * @param postId 게시글 고유번호
+     * @return
+     */
+    @RequestMapping(value = "/{postId}", method = RequestMethod.GET)
+    public ResponseEntity<List<BoardCommentVO>> list(@PathVariable("postId") Integer postId) throws Exception {
+        ResponseEntity<List<BoardCommentVO>> entity = null;
+
+        try {
+            entity = new ResponseEntity<>(boardCommentService.list(postId), HttpStatus.OK); // 200
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST); // 400
         }
 
         return entity;

@@ -29,7 +29,16 @@
         ]]>
     </delete>
 
-    <select id="" parameterType="Integer" resultType="BoardCommentVO">
+    <delete id="deleteByPostId" parameterType="Integer">
+        <![CDATA[
+        DELETE
+        FROM TBL_BOARD_COMMENT
+        WHERE 1 = 1
+          AND POST_ID = #{postId}
+        ]]>
+    </delete>
+
+    <select id="list" parameterType="Integer" resultType="BoardCommentVO">
         <![CDATA[
         SELECT CMT_ID
              , POST_ID

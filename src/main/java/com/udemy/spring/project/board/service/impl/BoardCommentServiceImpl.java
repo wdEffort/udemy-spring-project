@@ -30,6 +30,11 @@ public class BoardCommentServiceImpl implements BoardCommentService {
     }
 
     @Override
+    public void deleteByPostId(Integer id) throws Exception {
+        boardCommentDAO.deleteByPostId(id);
+    }
+
+    @Override
     public List<BoardCommentVO> list(Integer postId) throws Exception {
         return boardCommentDAO.list(postId);
     }
