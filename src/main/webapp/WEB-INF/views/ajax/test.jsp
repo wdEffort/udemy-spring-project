@@ -29,6 +29,7 @@
         <hr/>
 
         <ul id="comments"></ul>
+        <div class="pagination"></div>
 
         <div id="modify">
             <div class="title-dialog" align="center"></div>
@@ -42,13 +43,13 @@
         </div>
         <script>
             $(function () {
-                getComments(1);
+                getComments(1, 1);
 
                 // 등록
                 $('#btn-submit').on('click', function () {
-                    var postId = 1;
-                    var params = {
-                        postId: postId,
+                    var _postId = 1;
+                    var _params = {
+                        postId: _postId,
                         writer: $('#writer').val(),
                         cmtContent: $('#cmtContent').val()
                     };
@@ -61,11 +62,13 @@
                             'X-HTTP-Method-Override': 'POST' // GET, POST만을 지원하는 브라우저에서 PUT, PATCH, DELETE를 처리하지 못하는 이슈를 해결 할 수 있게 도와주는 속성
                         },
                         dataType: 'text',
-                        data: JSON.stringify(params),
+                        data: JSON.stringify(_params),
                         success: function (res) {
                             if (res === 'success') {
                                 console.log('댓글 등록 성공.');
-                                getComments(1);
+                                $('#writer').val('');
+                                $('#cmtContent').val('');
+                                getComments(1, 1);
                             }
                         },
                         error: function (req, stt, err) {
@@ -92,10 +95,10 @@
                 $('#btn-modify').on('click', function () {
                     $.ajax({
                         url: '${pageContext.request.contextPath}/board/comments/' + $('#mCmtId').val(),
-                        type: 'put',
+                        type: 'patch',
                         headers: {
                             'Content-Type': 'application/json',
-                            'X-HTTP-Method-Override': 'PUT'
+                            'X-HTTP-Method-Override': 'PATCH'
                         },
                         dataType: 'text',
                         data: JSON.stringify({cmtContent: $('#mCmtContent').val()}),
@@ -103,7 +106,7 @@
                             if (res === 'success') {
                                 console.log('댓글 수정 성공');
                                 $('#modify').hide('fast');
-                                getComments(1);
+                                getComments(1, 1);
                             }
                         },
                         error: function (req, stt, err) {
@@ -138,26 +141,56 @@
                 $('#btn-close').on('click', function () {
                     $('#modify').hide('fast');
                 });
+
+                $('.pagination').on('click', 'button', function (e) {
+                    e.preventDefault();
+
+                    var _postId = $(e.target).data('postId');
+                    var _page = $(e.target).data('pageNum');
+
+                    getComments(_postId, _page);
+                })
             });
 
-            // 목록 조회
-            function getComments(postId) {
-                // GET 방식으로 댓글 목록 조회 URI 요청
-                $.getJSON('${pageContext.request.contextPath}/board/comments/' + postId, function (data) {
+            // 목록 조회 + 페이징 처리
+            function getComments(_postId, _page) {
+                // GET 방식으로 댓글 목록 조회 URI 요청 + 페이징 처리
+                $.getJSON('${pageContext.request.contextPath}/board/comments/' + _postId + '/' + _page, function (_data) {
                     var $comments = $('#comments');
                     var _el = '';
 
-                    $.each(data, function (idx, item) {
-                        if (idx < 10) {
-                            _el += '<li data-cmt-id="' + item.cmtId + '" class="comment">'
-                                + '<span>' + item.cmtContent + '</span> (' + item.writer + ')'
-                                + '<button type="button">수정</button>'
-                                + '</li>';
-                        }
+                    $.each(_data.list, function (_idx, _item) {
+                        _el += '<li data-cmt-id="' + _item.cmtId + '" class="comment">'
+                            + '<span>' + _item.cmtContent + '</span> (' + _item.writer + ')'
+                            + '<button type="button">수정</button>'
+                            + '</li>';
                     });
 
                     $comments.html(_el);
+
+                    showPageNum(_postId, _data.pagingMaker);
                 });
+            }
+
+            function showPageNum(_postId, _pm) {
+                var $pagination = $('.pagination');
+                var _el = '';
+
+                if (_pm.prev) {
+                    _el += '<button type="button" data-post-id="' + _postId + '" data-page-num="' + 1 + '"><<</button>';
+                    _el += '<button type="button" data-post-id="' + _postId + '" data-page-num="' + (_pm.startPage - 1) + '"><</button>';
+                }
+
+                for (var i = _pm.startPage; i <= _pm.endPage; i++) {
+                    _el += '<button type="button" data-post-id="' + _postId + '" data-page-num="' + i + '">' + i + '</button>';
+                }
+
+                if (_pm.next) {
+                    _el += '<button type="button" data-post-id="' + _postId + '" data-page-num="' + (_pm.endPage + 1) + '">></button>';
+                    _el += '<button type="button" data-post-id="' + _postId + '" data-page-num="' + _pm.finalEndPage + '">>></button>';
+                }
+
+                $pagination.html(_el);
             }
         </script>
     </body>
