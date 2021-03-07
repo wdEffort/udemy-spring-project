@@ -614,6 +614,7 @@
     - 400 : 요청에 문제가 있기 때문에 서버에서 인식할 수 없음
     - 403 : 서버에서 허락되지 않음(권한)
     - 404 : 요청 URL을 찾을 수 없음
+    - 405 : 지원하지 않는 요청 Method
     - 406 : 전송 방식이 허락되지 않음(REST 방식에서 자주 나타나는 상태 코드)
 5. 500번대 상태 코드
     - 500 : 서버에서 처리시 문제가 발생(주로 프로그램상의 오류)
@@ -625,21 +626,31 @@
 
 ## HTTP Method
 
+> [RESTful API 설계 가이드 참고 링크](https://sanghaklee.tistory.com/m/57)
+
 1. `GET` : REST에서 조회와 관련된 Method
     - URI 예
-        1) 게시글에 달린 댓글 목록 조회 : /board/comments/{게시글 고유번호} => /board/comments/10
-        2) 게시글에 달린 댓글 한건 조회 : /board/comments/{게시글 고유번호}/{댓글 고유번호} => /board/comments/10/1
+        1) 전체 댓글 목록 조회 : /board/comments
+        2) 특정 게시글에 달린 댓글 목록 조회 : /board/comments/{게시글 고유번호} => /board/comments/10
+        3) 특정 게시글에 달린 댓글 한건 조회 : /board/comments/{게시글 고유번호}/{댓글 고유번호} => /board/comments/10/1
 2. `POST` : REST에서 등록과 관련된 Method
     - URI 예
         1) 댓글 등록 : /board/comments
             - 데이터를 JSON 문자열로 전송
 3. `PUT`, `PATCH` : REST에서 수정과 관련된 Method
     - URI 예
-        1) 댓글 수정 : /board/comments
+        1) 댓글 수정 : /board/comments/1 또는 /board/comments
             - 데이터를 JSON 문자열로 전송
+            - /board/comments의 경우 보통 Collection에 PUT 요청은 지원하지 않으므로 405 ERROR 응답하기도 한다.
+                1) Collection : /board/comments/1에서 comments의 집합
+                2) Documentation : /board/comments/1에서 1에 속한 자원
+            - 자원의 일부를 수정할 때에는 PUT보다 PATCH가 목적에 맞는 Method이다.
+                1) PUT : 자원 전체를 수정할 때
+                2) PATCH : 자원 일부를 수정할 때
 4. `DELETE` : REST에서 삭제와 관련된 Method
     - URI 예
-        1) 댓글 삭제 : /board/comments/{댓글 고유번호} => /board/comments/1
+        1) 댓글 전체 삭제 : /board/comments
+        2) 댓글 한건 삭제 : /board/comments/{댓글 고유번호} => /board/comments/1
 
 ---
 
